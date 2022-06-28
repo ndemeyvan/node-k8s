@@ -1,18 +1,18 @@
 
-name: Build , test and  push docker image to digial ocean cluster to production
+name: Build , test and  push docker image to digial ocean cluster to staging
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "staging" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "staging" ]
   workflow_dispatch:
 
 env:
-  NAME_SPACE: production
+  NAME_SPACE: staging
   EXT_PORT: 80
   INT_PORT: 80
-  IMAGE_NAME: ndemeyvan/node_k8s_production
+  IMAGE_NAME: ndemeyvan/node_k8s_staging
   IMAGE_ARTEFACT_NAME: node_k8s
 
 jobs:
