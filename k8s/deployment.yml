@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: node-k8s
-          image: node_k8s_production
+          image: ndemeyvan/node_k8s_production
           ports:
             - containerPort: 80
