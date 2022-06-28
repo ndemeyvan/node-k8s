@@ -12,7 +12,7 @@ env:
   NAME_SPACE: production
   EXT_PORT: 80
   INT_PORT: 80
-  IMAGE_NAME: ndemeyvan/node_k8s
+  IMAGE_NAME: ndemeyvan/node_k8s_production
   IMAGE_ARTEFACT_NAME: node_k8s
 
 jobs:
@@ -49,45 +49,45 @@ jobs:
   
 # # # # # # # # # # # # # # Test
 
-  # test:
-  #   needs: build 
-  #   runs-on: ${{matrix.os}}
+  test:
+    needs: build 
+    runs-on: ${{matrix.os}}
 
-  #   strategy:
-  #     matrix:
-  #       node-version: [16.x]
-  #       os: [ubuntu-latest]
+    strategy:
+      matrix:
+        node-version: [16.x]
+        os: [ubuntu-latest]
 
-  #   steps:
-  #     - name: Download artifact
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #          name: ${{env.IMAGE_ARTEFACT_NAME }}
-  #          path: /tmp
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+           name: ${{env.IMAGE_ARTEFACT_NAME }}
+           path: /tmp
 
-  #     - name: Load Docker image
-  #       run: docker load --input /tmp/${{env.IMAGE_ARTEFACT_NAME}}.tar
+      - name: Load Docker image
+        run: docker load --input /tmp/${{env.IMAGE_ARTEFACT_NAME}}.tar
 
-  #     - name: Display all docker images
-  #       run: docker images
+      - name: Display all docker images
+        run: docker images
 
-  #     - name: create docker container ${{env.IMAGE_ARTEFACT_NAME }}
-  #       run: docker run -d -p ${{env.EXT_PORT}}:${{env.INT_PORT}} --name  ${{ env.IMAGE_ARTEFACT_NAME }}  ${{ env.IMAGE_NAME }}
+      - name: create docker container ${{env.IMAGE_ARTEFACT_NAME }}
+        run: docker run -d -p ${{env.EXT_PORT}}:${{env.INT_PORT}} --name  ${{ env.IMAGE_ARTEFACT_NAME }}  ${{ env.IMAGE_NAME }}
 
-  #     - name: Wait the container start
-  #       run: sleep 5
+      - name: Wait the container start
+        run: sleep 5
 
-  #     - name: Curl the localhost address
-  #       run: curl localhost:${{env.EXT_PORT}} | grep "Hello"
+      - name: Curl the localhost address
+        run: curl localhost:${{env.EXT_PORT}} | grep "Hello"
 
-  #     - name: Login to DockerHub
-  #       uses: docker/login-action@v2
-  #       with:
-  #           username: ${{ secrets.DOCKER_USERNAME }}
-  #           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
 
-  #     - name: The test is correct , push image to dockerHub
-  #       run: docker push ${{env.IMAGE_NAME}}
+      - name: The test is correct , push image to dockerHub
+        run: docker push ${{env.IMAGE_NAME}}
 
 # # # # # # # # # # # # # # Deployment
 
